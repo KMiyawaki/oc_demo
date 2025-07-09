@@ -3,6 +3,7 @@
 
 import math
 import threading
+import os
 
 import actionlib
 import actionlib.msg
@@ -38,6 +39,7 @@ class WayPointNavigation(object):
         self.angular_gain = rospy.get_param('~angular_gain', 0.8)
         self.pose_filter = rospy.get_param('~pose_filter', 10)
         self.loop = rospy.get_param('~loop', True)
+        self.estimate = rospy.get_param('~estimate', True)
         self.pub_cmd_vel = rospy.Publisher('cmd_vel', Twist, queue_size=1)
         self.rate = rospy.Rate(process_rate)
         self.amcl_lock = threading.Lock()
@@ -57,7 +59,15 @@ class WayPointNavigation(object):
             return
         if self.crnt_index >= len(self.waypoints):
             if self.loop:
-                rospy.loginfo('Finish track, goto start.')
+                rospy.loginfo('Finish track, stopping')
+                for i in range(5):
+                    self.pub_cmd_vel.publish(Twist())
+                    rospy.sleep(0.1)
+                rospy.loginfo('Estimatng pose')
+                command = 'roslaunch oc_demo amcl_estimate.launch'
+                print(command)
+                os.system(command)
+                rospy.loginfo('Goto start.')
                 self.crnt_index = 0
             else:
                 return False

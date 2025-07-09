@@ -1,0 +1,28 @@
+<launch>
+    <arg name="x" default="5.476450"/>
+    <arg name="y" default="1.380835"/>
+    <arg name="yaw" default="-1.685587" />
+    <arg name="x_sigma" default="0.25" />
+    <arg name="y_sigma" default="0.25" />
+    <arg name="yaw_sigma" default="$(eval 30 * 3.141592653589793 / 180.0)"/>
+    <arg name="hz" default="10" />
+    <arg name="publish_time" default="2" />
+    <arg name="update_time" default="3" />
+    <!-- 自己位置推定前に直進させたい距離 -->
+    <arg name="first_run" default="0" />
+    <arg name="first_run_vel" default="0.4" />
+
+    <node pkg="oc_demo" type="amcl_estimate.py" name="amcl_estimate" output="screen">
+        <param name="x" value="$(arg x)"/>
+        <param name="y" value="$(arg y)"/>
+        <param name="yaw" value="$(arg yaw)" />
+        <param name="x_sigma" value="$(arg x_sigma)" />
+        <param name="y_sigma" value="$(arg y_sigma)" />
+        <param name="yaw_sigma" value="$(arg yaw_sigma)"/>
+        <param name="hz" value="$(arg hz)" />
+        <param name="publish_time" value="$(arg publish_time)" />
+        <param name="update_time" value="$(arg update_time)" />
+        <param name="first_run" value="$(arg first_run)" />
+        <param name="first_run_vel" value="$(arg first_run_vel)" />
+    </node>
+</launch>

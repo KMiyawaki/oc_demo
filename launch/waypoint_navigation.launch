@@ -5,6 +5,8 @@
   <arg name="start_index" default="0"/>
   <arg name="start_id" default="" />
   <arg name="manual" default="true" />
+  <arg name="loop" default="true" />
+  <arg name="estimate" default="true" />
 
   <node pkg="oc_demo" type="waypoint_navigation.py" name="waypoint_navigation" output="screen" required="true">
     <param name="csv_path" value="$(arg csv_path)" />
@@ -15,5 +17,7 @@
     <param name="angular_max" value="$(eval 30 * 3.141592653589793 / 180.0)" />
     <param name="angular_gain" value="1.0" />
     <param name="pose_filter" value="1" />
+    <param name="loop" value="$(arg loop)"/>
+    <param name="estimate" value="$(arg estimate)"/>
   </node>
 </launch>
